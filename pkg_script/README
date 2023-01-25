@@ -1,0 +1,14 @@
+This document describes how to make debian packages by manually.
+
+
+# Create musl package
+
+PKG_TARGET=ubuntu20 \
+SECT=release \
+PROJ=riscv64-linux-musl \
+VER=1.2.3 \
+  ./pkg_script/ubuntu_package.sh
+
+
+Debian package and related files are generated on pkg_${PKG_TARGET}/
+(ex. pkg_ubuntu20) directory.

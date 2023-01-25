@@ -1,0 +1,11 @@
+Source: riscv64-linux-musl
+Section: devel
+Priority: optional
+Maintainer: Katsuhiro Suzuki <katsuster@katsuster.net>
+Standards-Version: 3.9.7
+Build-Depends: riscv64-linux-musl-headers, debhelper (>= 9)
+
+Package: riscv64-linux-musl
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: musl C library for RISC-V processors
