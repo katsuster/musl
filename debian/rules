@@ -1,0 +1,85 @@
+#!/usr/bin/make -f
+
+%:
+	PATH=$(PREFIX)/bin:$(PATH) \
+	    dh $@
+
+BUILD_BASE = build
+PREFIX_BASE = /opt/riscv
+
+PWD := $(shell pwd)
+PKGVER := $(shell head -1 PKGVERSION)
+
+PROJ   = riscv64-linux-musl
+TARGET = riscv64-unknown-linux-musl
+
+MARCH_LIST = rv64gc rv64imac rv32gc rv32imac
+MABI_LIST  = lp64d lp64 ilp32d ilp32
+MLIB_LIST  = lib64 lib64 lib32 lib32
+MFLT_LIST  = -D__riscv_hard_float -D__riscv_soft_float -D__riscv_hard_float -D__riscv_soft_float
+MARCH_EXT  =
+
+BUILD   = $(BUILD_BASE)_$(MARCH)_$(PROJ)
+PREFIX  = $(PREFIX_BASE)
+SYSROOT = $(PREFIX_BASE)/$(TARGET)/sysroot
+DEST    = $(PWD)/debian/$(PROJ)
+DESTPRE = $(DEST)/$(PREFIX)
+DESTSYS = $(DEST)/$(SYSROOT)
+
+define configure_macro
+	$(eval MARCH = $(word $(1),$(MARCH_LIST))$(MARCH_EXT))
+	$(eval MABI  = $(word $(1),$(MABI_LIST)))
+	$(eval MLIB  = $(word $(1),$(MLIB_LIST)))
+	$(eval MFLT  = $(word $(1),$(MFLT_LIST)))
+	mkdir -p $(BUILD) && cd $(BUILD) && \
+	../configure \
+	  --host=$(TARGET) \
+	  --prefix=$(SYSROOT)/usr \
+	  --enable-shared \
+	  --libdir=$(SYSROOT)/usr/$(MLIB)/$(MABI) \
+	  --syslibdir=$(SYSROOT)/lib \
+	  CPPFLAGS="$(MFLT)" \
+	  CFLAGS="-O2 -mcmodel=medany -march=$(MARCH) -mabi=$(MABI)"
+endef
+
+define build_macro
+	$(eval MARCH = $(word $(1),$(MARCH_LIST))$(MARCH_EXT))
+	dh_auto_build -B$(BUILD) --parallel
+endef
+
+define install_macro
+	$(eval MARCH = $(word $(1),$(MARCH_LIST))$(MARCH_EXT))
+	$(MAKE) -C $(BUILD) DESTDIR=$(DEST) install
+endef
+
+define shlibdeps_macro
+	$(eval MABI  = $(word $(1),$(MABI_LIST)))
+	$(eval MLIB  = $(word $(1),$(MLIB_LIST)))
+	###dh_shlibdeps -l$(DESTSYS)/lib:$(DESTSYS)/$(MLIB)/$(MABI)
+endef
+
+override_dh_auto_clean:
+
+override_dh_autoreconf:
+
+override_dh_auto_configure:
+	$(call configure_macro,1)
+	$(call configure_macro,2)
+
+override_dh_auto_build:
+	$(call build_macro,1)
+	$(call build_macro,2)
+
+# Ignore tests
+override_dh_auto_test:
+
+override_dh_auto_install:
+	$(call install_macro,1)
+	$(call install_macro,2)
+
+# Ignore strip
+override_dh_strip:
+
+override_dh_shlibdeps:
+	$(call shlibdeps_macro,1)
+	$(call shlibdeps_macro,2)
