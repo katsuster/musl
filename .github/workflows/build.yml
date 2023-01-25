@@ -1,0 +1,43 @@
+name: build musl
+
+on:
+  push:
+    branches:
+      - main
+      - riscv-musl-*
+env:
+  URL_PACKAGE: https://github.com/katsuster
+  DEB_BINUTILS: 2.39-1
+  DEB_GCC: 12.0.1-rvv-3
+  DEB_LINUX: 5.10.0-3
+  VER_MUSL: 2.36
+  DIR_SRC: .src
+  DIR_PACKAGE: .pkg
+
+jobs:
+  debian:
+    runs-on: ubuntu-20.04
+    env:
+      PKG_TARGET: ubuntu20
+      SECT: release
+    steps:
+      - name: "clone"
+        uses: actions/checkout@v3
+      - name: "prereq"
+        run: |
+          ./pkg_script/ubuntu_setup.sh
+          curl -L ${{ env.URL_PACKAGE }}/binutils-gdb/releases/download/riscv-binutils-${{ env.DEB_BINUTILS }}/riscv64-linux-musl-binutils_${{ env.DEB_BINUTILS }}_amd64.deb > riscv64-linux-musl-binutils.deb
+          curl -L ${{ env.URL_PACKAGE }}/riscv-gcc/releases/download/riscv-gcc-${{ env.DEB_GCC }}/riscv64-linux-musl-gcc-stage1_${{ env.DEB_GCC }}_amd64.deb > riscv64-linux-musl-gcc-stage1.deb
+          curl -L ${{ env.URL_PACKAGE }}/linux-headers/releases/download/riscv-linux-headers-${{ env.DEB_LINUX }}/riscv64-linux-musl-headers_${{ env.DEB_LINUX }}_amd64.deb > riscv64-linux-musl-headers.deb
+          sudo dpkg -i riscv64-linux-musl-binutils.deb
+          sudo dpkg -i riscv64-linux-musl-gcc-stage1.deb
+          sudo dpkg -i riscv64-linux-musl-headers.deb
+      - name: "package"
+        run: |
+          PROJ=riscv64-linux-musl VER=${{ env.VER_MUSL }} \
+            ./pkg_script/ubuntu_package.sh
+      - name: "upload"
+        uses: actions/upload-artifact@v3
+        with:
+          name: musl.deb
+          path: pkg_${{ env.PKG_TARGET }}/riscv64-*
