@@ -4,14 +4,14 @@
 	PATH=$(PREFIX)/bin:$(PATH) \
 	    dh $@
 
-build_dir = build
-PREFIX = /opt/riscv
+BUILD_BASE = build
+PREFIX_BASE = /opt/riscv
 
 PWD := $(shell pwd)
 PKGVER := $(shell head -1 PKGVERSION)
 
-PACKAGE = riscv64-linux-musl
-TARGET  = riscv64-unknown-linux-musl
+PROJ   = riscv64-linux-musl
+TARGET = riscv64-unknown-linux-musl
 
 MARCH_LIST = rv64gc rv64imac rv32gc rv32imac
 MABI_LIST  = lp64d lp64 ilp32d ilp32
@@ -19,39 +19,43 @@ MLIB_LIST  = lib64 lib64 lib32 lib32
 MFLT_LIST  = -D__riscv_hard_float -D__riscv_soft_float -D__riscv_hard_float -D__riscv_soft_float
 MARCH_EXT  =
 
+BUILD   = $(BUILD_BASE)_$(MARCH)_$(PROJ)
+PREFIX  = $(PREFIX_BASE)
+SYSROOT = $(PREFIX_BASE)/$(TARGET)/sysroot
+DEST    = $(PWD)/debian/$(PROJ)
+DESTPRE = $(DEST)/$(PREFIX)
+DESTSYS = $(DEST)/$(SYSROOT)
+
 define configure_macro
 	$(eval MARCH = $(word $(1),$(MARCH_LIST))$(MARCH_EXT))
 	$(eval MABI  = $(word $(1),$(MABI_LIST)))
 	$(eval MLIB  = $(word $(1),$(MLIB_LIST)))
 	$(eval MFLT  = $(word $(1),$(MFLT_LIST)))
-	$(eval SDIR  = $(PWD)/debian/$(PACKAGE)/$(PREFIX)/$(TARGET))
-	mkdir -p $(build_dir)_$(MARCH)_$(PACKAGE) && \
-	cd $(build_dir)_$(MARCH)_$(PACKAGE) && \
+	mkdir -p $(BUILD) && cd $(BUILD) && \
 	../configure \
-	  --target=$(TARGET) \
-	  --prefix=$(SDIR)/usr \
+	  --host=$(TARGET) \
+	  --prefix=$(SYSROOT)/usr \
 	  --enable-shared \
-	  --libdir=$(SDIR)/usr/$(MLIB)/$(MABI) \
+	  --libdir=$(SYSROOT)/usr/$(MLIB)/$(MABI) \
+	  --syslibdir=$(SYSROOT)/lib \
 	  CPPFLAGS="$(MFLT)" \
 	  CFLAGS="-O2 -mcmodel=medany -march=$(MARCH) -mabi=$(MABI)"
 endef
 
 define build_macro
 	$(eval MARCH = $(word $(1),$(MARCH_LIST))$(MARCH_EXT))
-	dh_auto_build -B$(build_dir)_$(MARCH)_$(PACKAGE) --parallel
+	dh_auto_build -B$(BUILD) --parallel
 endef
 
 define install_macro
 	$(eval MARCH = $(word $(1),$(MARCH_LIST))$(MARCH_EXT))
-	$(eval SDIR  = $(PWD)/debian/$(PACKAGE)/$(PREFIX)/$(TARGET))
-	$(MAKE) -C $(build_dir)_$(MARCH)_$(PACKAGE) install
+	$(MAKE) -C $(BUILD) DESTDIR=$(DEST) install
 endef
 
 define shlibdeps_macro
 	$(eval MABI  = $(word $(1),$(MABI_LIST)))
 	$(eval MLIB  = $(word $(1),$(MLIB_LIST)))
-	$(eval SDIR  = $(PWD)/debian/$(PACKAGE)/$(PREFIX)/$(TARGET))
-	###dh_shlibdeps -l$(SDIR)/lib:$(SDIR)/$(MLIB)/$(MABI)
+	###dh_shlibdeps -l$(DESTSYS)/lib:$(DESTSYS)/$(MLIB)/$(MABI)
 endef
 
 override_dh_auto_clean:
