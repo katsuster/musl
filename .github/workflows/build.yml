@@ -7,10 +7,10 @@ on:
       - riscv-musl-*
 env:
   URL_PACKAGE: https://github.com/katsuster
-  DEB_BINUTILS: 2.39-1
+  DEB_BINUTILS: 2.40.90-1
   DEB_GCC: 12.0.1-rvv-3
   DEB_LINUX: 5.10.0-3
-  VER_MUSL: 2.36
+  VER_MUSL: 1.2.4
   DIR_SRC: .src
   DIR_PACKAGE: .pkg
 
