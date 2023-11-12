@@ -20,7 +20,13 @@ __cp_begin:
 	mv a3, a5
 	mv a4, a6
 	mv a5, a7
+#if __riscv_xlen == 64
 	ld a6, 0(sp)
+#elif __riscv_xlen == 32
+	lw a6, 0(sp)
+#else /* __riscv_xlen */
+#error "__riscv_xlen must be 32 or 64"
+#endif
 	mv a7, t0
 	ecall
 __cp_end:

@@ -69,8 +69,8 @@
 #define __NR_preadv 69
 #define __NR_pwritev 70
 #define __NR_sendfile 71
-#define __NR_pselect6 72
-#define __NR_ppoll 73
+#define __NR_pselect632_64 72
+#define __NR_ppoll32_64 73
 #define __NR_signalfd4 74
 #define __NR_vmsplice 75
 #define __NR_splice 76
@@ -83,9 +83,9 @@
 #define __NR_fdatasync 83
 #define __NR_sync_file_range 84
 #define __NR_timerfd_create 85
-#define __NR_timerfd_settime 86
-#define __NR_timerfd_gettime 87
-#define __NR_utimensat 88
+#define __NR_timerfd_settime32_64 86
+#define __NR_timerfd_gettime32_64 87
+#define __NR_utimensat32_64 88
 #define __NR_acct 89
 #define __NR_capget 90
 #define __NR_capset 91
@@ -95,7 +95,7 @@
 #define __NR_waitid 95
 #define __NR_set_tid_address 96
 #define __NR_unshare 97
-#define __NR_futex 98
+#define __NR_futex32_64 98
 #define __NR_set_robust_list 99
 #define __NR_get_robust_list 100
 #define __NR_nanosleep 101
@@ -105,14 +105,14 @@
 #define __NR_init_module 105
 #define __NR_delete_module 106
 #define __NR_timer_create 107
-#define __NR_timer_gettime 108
+#define __NR_timer_gettime32_64 108
 #define __NR_timer_getoverrun 109
-#define __NR_timer_settime 110
+#define __NR_timer_settime32_64 110
 #define __NR_timer_delete 111
-#define __NR_clock_settime 112
-#define __NR_clock_gettime 113
-#define __NR_clock_getres 114
-#define __NR_clock_nanosleep 115
+#define __NR_clock_settime32_64 112
+#define __NR_clock_gettime32_64 113
+#define __NR_clock_getres32_64 114
+#define __NR_clock_nanosleep32_64 115
 #define __NR_syslog 116
 #define __NR_ptrace 117
 #define __NR_sched_setparam 118
@@ -124,7 +124,7 @@
 #define __NR_sched_yield 124
 #define __NR_sched_get_priority_max 125
 #define __NR_sched_get_priority_min 126
-#define __NR_sched_rr_get_interval 127
+#define __NR_sched_rr_get_interval32_64 127
 #define __NR_restart_syscall 128
 #define __NR_kill 129
 #define __NR_tkill 130
@@ -134,7 +134,7 @@
 #define __NR_rt_sigaction 134
 #define __NR_rt_sigprocmask 135
 #define __NR_rt_sigpending 136
-#define __NR_rt_sigtimedwait 137
+#define __NR_rt_sigtimedwait32_64 137
 #define __NR_rt_sigqueueinfo 138
 #define __NR_rt_sigreturn 139
 #define __NR_setpriority 140
@@ -179,8 +179,8 @@
 #define __NR_sysinfo 179
 #define __NR_mq_open 180
 #define __NR_mq_unlink 181
-#define __NR_mq_timedsend 182
-#define __NR_mq_timedreceive 183
+#define __NR_mq_timedsend32_64 182
+#define __NR_mq_timedreceive32_64 183
 #define __NR_mq_notify 184
 #define __NR_mq_getsetattr 185
 #define __NR_msgget 186
@@ -189,7 +189,7 @@
 #define __NR_msgsnd 189
 #define __NR_semget 190
 #define __NR_semctl 191
-#define __NR_semtimedop 192
+#define __NR_semtimedop32_64 192
 #define __NR_semop 193
 #define __NR_shmget 194
 #define __NR_shmctl 195
@@ -240,7 +240,7 @@
 #define __NR_rt_tgsigqueueinfo 240
 #define __NR_perf_event_open 241
 #define __NR_accept4 242
-#define __NR_recvmmsg 243
+#define __NR_recvmmsg32_64 243
 #define __NR_arch_specific_syscall 244
 #define __NR_wait4 260
 #define __NR_prlimit64 261
@@ -248,7 +248,7 @@
 #define __NR_fanotify_mark 263
 #define __NR_name_to_handle_at 264
 #define __NR_open_by_handle_at 265
-#define __NR_clock_adjtime 266
+#define __NR_clock_adjtime32_64 266
 #define __NR_syncfs 267
 #define __NR_setns 268
 #define __NR_sendmmsg 269
@@ -274,9 +274,31 @@
 #define __NR_pkey_alloc 289
 #define __NR_pkey_free 290
 #define __NR_statx 291
-#define __NR_io_pgetevents 292
+#define __NR_io_pgetevents32_64 292
 #define __NR_rseq 293
 #define __NR_kexec_file_load 294
+
+#define __NR_clock_gettime64_64 403
+#define __NR_clock_settime64_64 404
+#define __NR_clock_adjtime64_64 405
+#define __NR_clock_getres64_64 406
+#define __NR_clock_nanosleep64_64 407
+#define __NR_timer_gettime64_64 408
+#define __NR_timer_settime64_64 409
+#define __NR_timerfd_gettime64_64 410
+#define __NR_timerfd_settime64_64 411
+#define __NR_utimensat64_64 412
+#define __NR_pselect664_64 413
+#define __NR_ppoll64_64 414
+#define __NR_io_pgetevents64_64 416
+#define __NR_recvmmsg64_64 417
+#define __NR_mq_timedsend64_64 418
+#define __NR_mq_timedreceive64_64 419
+#define __NR_semtimedop64_64 420
+#define __NR_rt_sigtimedwait64_64 421
+#define __NR_futex64_64 422
+#define __NR_sched_rr_get_interval64_64 423
+
 #define __NR_pidfd_send_signal 424
 #define __NR_io_uring_setup 425
 #define __NR_io_uring_enter 426
@@ -299,6 +321,142 @@
 #define __NR_landlock_create_ruleset	444
 #define __NR_landlock_add_rule	445
 #define __NR_landlock_restrict_self	446
+
+#if __riscv_xlen == 64
+
+#undef __NR_clock_gettime
+#undef __NR_clock_settime
+#undef __NR_clock_adjtime
+#undef __NR_clock_getres
+#undef __NR_clock_nanosleep
+#undef __NR_timer_gettime
+#undef __NR_timer_settime
+#undef __NR_timerfd_gettime
+#undef __NR_timerfd_settime
+#undef __NR_utimensat
+#undef __NR_pselect6
+#undef __NR_ppoll
+#undef __NR_io_pgetevents
+#undef __NR_recvmmsg
+#undef __NR_mq_timedsend
+#undef __NR_mq_timedreceive
+#undef __NR_semtimedop
+#undef __NR_rt_sigtimedwait
+#undef __NR_futex
+#undef __NR_sched_rr_get_interval
+
+#define __NR_clock_gettime         __NR_clock_gettime32_64
+#define __NR_clock_settime         __NR_clock_settime32_64
+#define __NR_clock_adjtime         __NR_clock_adjtime32_64
+#define __NR_clock_getres          __NR_clock_getres32_64
+#define __NR_clock_nanosleep       __NR_clock_nanosleep32_64
+#define __NR_timer_gettime         __NR_timer_gettime32_64
+#define __NR_timer_settime         __NR_timer_settime32_64
+#define __NR_timerfd_gettime       __NR_timerfd_gettime32_64
+#define __NR_timerfd_settime       __NR_timerfd_settime32_64
+#define __NR_utimensat             __NR_utimensat32_64
+#define __NR_pselect6              __NR_pselect632_64
+#define __NR_ppoll                 __NR_ppoll32_64
+#define __NR_io_pgetevents         __NR_io_pgetevents32_64
+#define __NR_recvmmsg              __NR_recvmmsg32_64
+#define __NR_mq_timedsend          __NR_mq_timedsend32_64
+#define __NR_mq_timedreceive       __NR_mq_timedreceive32_64
+#define __NR_semtimedop            __NR_semtimedop32_64
+#define __NR_rt_sigtimedwait       __NR_rt_sigtimedwait32_64
+#define __NR_futex                 __NR_futex32_64
+#define __NR_sched_rr_get_interval __NR_sched_rr_get_interval32_64
+
+#elif __riscv_xlen == 32
+
+#undef __NR_clock_gettime
+#undef __NR_clock_settime
+#undef __NR_clock_adjtime
+#undef __NR_clock_getres
+#undef __NR_clock_nanosleep
+#undef __NR_timer_gettime
+#undef __NR_timer_settime
+#undef __NR_timerfd_gettime
+#undef __NR_timerfd_settime
+#undef __NR_utimensat
+#undef __NR_pselect6
+#undef __NR_ppoll
+#undef __NR_io_pgetevents
+#undef __NR_recvmmsg
+#undef __NR_mq_timedsend
+#undef __NR_mq_timedreceive
+#undef __NR_semtimedop
+#undef __NR_rt_sigtimedwait
+#undef __NR_futex
+#undef __NR_sched_rr_get_interval
+
+#define __NR_clock_gettime         __NR_clock_gettime64_64
+#define __NR_clock_settime         __NR_clock_settime64_64
+#define __NR_clock_adjtime         __NR_clock_adjtime64_64
+#define __NR_clock_getres          __NR_clock_getres64_64
+#define __NR_clock_nanosleep       __NR_clock_nanosleep64_64
+#define __NR_timer_gettime         __NR_timer_gettime64_64
+#define __NR_timer_settime         __NR_timer_settime64_64
+#define __NR_timerfd_gettime       __NR_timerfd_gettime64_64
+#define __NR_timerfd_settime       __NR_timerfd_settime64_64
+#define __NR_utimensat             __NR_utimensat64_64
+#define __NR_pselect6              __NR_pselect664_64
+#define __NR_ppoll                 __NR_ppoll64_64
+#define __NR_io_pgetevents         __NR_io_pgetevents64_64
+#define __NR_recvmmsg              __NR_recvmmsg64_64
+#define __NR_mq_timedsend          __NR_mq_timedsend64_64
+#define __NR_mq_timedreceive       __NR_mq_timedreceive64_64
+#define __NR_semtimedop            __NR_semtimedop64_64
+#define __NR_rt_sigtimedwait       __NR_rt_sigtimedwait64_64
+#define __NR_futex                 __NR_futex64_64
+#define __NR_sched_rr_get_interval __NR_sched_rr_get_interval64_64
+
+#endif
+
+#if 0
+
+#undef __NR_clock_gettime
+#undef __NR_clock_settime
+#undef __NR_clock_adjtime
+#undef __NR_clock_getres
+#undef __NR_clock_nanosleep
+#undef __NR_timer_gettime
+#undef __NR_timer_settime
+#undef __NR_timerfd_gettime
+#undef __NR_timerfd_settime
+#undef __NR_utimensat
+#undef __NR_pselect6
+#undef __NR_ppoll
+#undef __NR_io_pgetevents
+#undef __NR_recvmmsg
+#undef __NR_mq_timedsend
+#undef __NR_mq_timedreceive
+#undef __NR_semtimedop
+#undef __NR_rt_sigtimedwait
+#undef __NR_futex
+#undef __NR_sched_rr_get_interval
+
+#define __NR_clock_gettime         __NR_clock_gettime
+#define __NR_clock_settime         __NR_clock_settime
+#define __NR_clock_adjtime         __NR_clock_adjtime
+#define __NR_clock_getres          __NR_clock_getres
+#define __NR_clock_nanosleep       __NR_clock_nanosleep
+#define __NR_timer_gettime         __NR_timer_gettime
+#define __NR_timer_settime         __NR_timer_settime
+#define __NR_timerfd_gettime       __NR_timerfd_gettime
+#define __NR_timerfd_settime       __NR_timerfd_settime
+#define __NR_utimensat             __NR_utimensat
+#define __NR_pselect6              __NR_pselect6
+#define __NR_ppoll                 __NR_ppoll
+#define __NR_io_pgetevents         __NR_io_pgetevents
+#define __NR_recvmmsg              __NR_recvmmsg
+#define __NR_mq_timedsend          __NR_mq_timedsend
+#define __NR_mq_timedreceive       __NR_mq_timedreceive
+#define __NR_semtimedop            __NR_semtimedop
+#define __NR_rt_sigtimedwait       __NR_rt_sigtimedwait
+#define __NR_futex                 __NR_futex
+#define __NR_sched_rr_get_interval __NR_sched_rr_get_interval
+
+#endif
 
 #define __NR_sysriscv __NR_arch_specific_syscall
 #define __NR_riscv_flush_icache (__NR_sysriscv + 15)

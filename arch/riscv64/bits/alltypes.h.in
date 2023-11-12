@@ -1,9 +1,26 @@
+#if __riscv_xlen == 64
+
 #define _Addr long
 #define _Int64 long
 #define _Reg long
 
 #define __BYTE_ORDER 1234
 #define __LONG_MAX 0x7fffffffffffffffL
+
+#elif __riscv_xlen == 32
+
+#define _Addr int
+#define _Int64 long long
+#define _Reg int
+
+#define __BYTE_ORDER 1234
+#define __LONG_MAX  0x7fffffffL
+
+#else /* __riscv_xlen */
+
+#error "__riscv_xlen must be 32 or 64"
+
+#endif /* __riscv_xlen */
 
 #ifndef __cplusplus
 TYPEDEF int wchar_t;

@@ -9,8 +9,15 @@
 __clone:
 	# Save func and arg to stack
 	addi a1, a1, -16
+#if __riscv_xlen == 64
 	sd a0, 0(a1)
 	sd a3, 8(a1)
+#elif __riscv_xlen == 32
+	sw a0, 0(a1)
+	sw a3, 4(a1)
+#else /* __riscv_xlen */
+#error "__riscv_xlen must be 32 or 64"
+#endif
 
 	# Call SYS_clone
 	mv a0, a2
@@ -25,8 +32,15 @@ __clone:
 	ret
 
 	# Child
+#if __riscv_xlen == 64
 1:      ld a1, 0(sp)
 	ld a0, 8(sp)
+#elif __riscv_xlen == 32
+1:      lw a1, 0(sp)
+	lw a0, 4(sp)
+#else /* __riscv_xlen */
+#error "__riscv_xlen must be 32 or 64"
+#endif
 	jalr a1
 
 	# Exit

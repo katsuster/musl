@@ -25,6 +25,7 @@ static inline void *a_cas_p(volatile void *p, void *t, void *s)
 {
 	void *old;
 	int tmp;
+#if __riscv_xlen == 64
 	__asm__ __volatile__ (
 		"\n1:	lr.d.aqrl %0, (%2)\n"
 		"	bne %0, %3, 1f\n"
@@ -34,5 +35,18 @@ static inline void *a_cas_p(volatile void *p, void *t, void *s)
 		: "=&r"(old), "=&r"(tmp)
 		: "r"(p), "r"(t), "r"(s)
 		: "memory");
+#elif __riscv_xlen == 32
+	__asm__ __volatile__ (
+		"\n1:	lr.w.aqrl %0, (%2)\n"
+		"	bne %0, %3, 1f\n"
+		"	sc.w.aqrl %1, %4, (%2)\n"
+		"	bnez %1, 1b\n"
+		"1:"
+		: "=&r"(old), "=&r"(tmp)
+		: "r"(p), "r"(t), "r"(s)
+		: "memory");
+#else
+#error "__riscv_xlen must be 32 or 64"
+#endif /* __riscv_xlen */
 	return old;
 }

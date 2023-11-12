@@ -6,6 +6,7 @@
 #define RISCV_FP_SUFFIX ""
 #endif
 
+#if __riscv_xlen == 64
 #define LDSO_ARCH "riscv64" RISCV_FP_SUFFIX
 
 #define TPOFF_K 0
@@ -17,6 +18,23 @@
 #define REL_DTPMOD      R_RISCV_TLS_DTPMOD64
 #define REL_DTPOFF      R_RISCV_TLS_DTPREL64
 #define REL_TPOFF       R_RISCV_TLS_TPREL64
+
+#elif __riscv_xlen == 32
+#define LDSO_ARCH "riscv32" RISCV_FP_SUFFIX
+
+#define TPOFF_K 0
+
+#define REL_SYMBOLIC    R_RISCV_32
+#define REL_PLT         R_RISCV_JUMP_SLOT
+#define REL_RELATIVE    R_RISCV_RELATIVE
+#define REL_COPY        R_RISCV_COPY
+#define REL_DTPMOD      R_RISCV_TLS_DTPMOD32
+#define REL_DTPOFF      R_RISCV_TLS_DTPREL32
+#define REL_TPOFF       R_RISCV_TLS_TPREL32
+
+#else /* __riscv_xlen */
+#error "__riscv_xlen must be 32 or 64"
+#endif /* __riscv_xlen */
 
 #define CRTJMP(pc,sp) __asm__ __volatile__( \
 	"mv sp, %1 ; jr %0" : : "r"(pc), "r"(sp) : "memory" )

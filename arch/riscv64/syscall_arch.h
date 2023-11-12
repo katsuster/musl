@@ -1,5 +1,14 @@
+#if __riscv_xlen == 64
 #define __SYSCALL_LL_E(x) (x)
 #define __SYSCALL_LL_O(x) (x)
+#elif __riscv_xlen == 32
+#define __SYSCALL_LL_E(x) \
+((union { long long ll; long l[2]; }){ .ll = x }).l[0], \
+((union { long long ll; long l[2]; }){ .ll = x }).l[1]
+#define __SYSCALL_LL_O(x) 0, __SYSCALL_LL_E((x))
+#else /* __riscv_xlen */
+#error "__riscv_xlen must be 32 or 64"
+#endif
 
 #define __asm_syscall(...) \
 	__asm__ __volatile__ ("ecall\n\t" \
@@ -68,6 +77,19 @@ static inline long __syscall6(long n, long a, long b, long c, long d, long e, lo
 	register long a4 __asm__("a4") = e;
 	register long a5 __asm__("a5") = f;
 	__asm_syscall("r"(a7), "0"(a0), "r"(a1), "r"(a2), "r"(a3), "r"(a4), "r"(a5))
+}
+
+static inline long __syscall7(long n, long a, long b, long c, long d, long e, long f, long g)
+{
+	register long a7 __asm__("a7") = n;
+	register long a0 __asm__("a0") = a;
+	register long a1 __asm__("a1") = b;
+	register long a2 __asm__("a2") = c;
+	register long a3 __asm__("a3") = d;
+	register long a4 __asm__("a4") = e;
+	register long a5 __asm__("a5") = f;
+	register long a6 __asm__("a6") = g;
+	__asm_syscall("r"(a7), "0"(a0), "r"(a1), "r"(a2), "r"(a3), "r"(a4), "r"(a5), "r"(a6))
 }
 
 #define VDSO_USEFUL
